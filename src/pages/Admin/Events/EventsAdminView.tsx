@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Trophy, Calendar, Check, AlertCircle, RefreshCw, Send } from 'lucide-react';
+import { Trophy, AlertCircle, RefreshCw, Send } from 'lucide-react';
 import { Card } from '../../../components/common/Card';
 import { Button } from '../../../components/common/Button';
 import { apiClient } from '../../../api/client';
