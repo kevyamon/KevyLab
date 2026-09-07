@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'iconoir-react';
 import { Button } from '../../components/common/Button';
 
 /**
@@ -20,15 +20,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isAppathonActive = tru
   return (
     <section
       style={{
-        padding: '90px 24px 70px 24px',
-        textAlign: 'center',
         position: 'relative',
+        padding: '100px 24px 80px 24px',
+        textAlign: 'center',
         overflow: 'hidden'
       }}
     >
       <div
         style={{
-          maxWidth: '900px',
+          maxWidth: '860px',
           margin: '0 auto',
           display: 'flex',
           flexDirection: 'column',
@@ -51,8 +51,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isAppathonActive = tru
             marginBottom: '28px'
           }}
         >
-          <Sparkles size={14} />
-          <span>Laboratoire d’ingénierie & d’expérimentation</span>
+          <span>Ingénierie logicielle augmentée & conception agentique</span>
         </div>
 
         {/* Titre Principal */}
@@ -79,8 +78,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isAppathonActive = tru
             marginBottom: '40px'
           }}
         >
-          KevyLab conçoit, éprouve et propulse des solutions numériques utiles,
-          performantes et durables. Du prototype au déploiement à grande échelle.
+          Fondé par Kevin Amon, KevyLab explore la nouvelle ère de la conception logicielle
+          pilotée par intelligence artificielle agentique. Nous concevons, éprouvons et propulsons
+          des architectures numériques durables et performantes.
         </p>
 
         {/* Actions principales */}
@@ -95,14 +95,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ isAppathonActive = tru
           <Link to="/projets">
             <Button variant="primary" size="lg">
               <span>Découvrir nos projets</span>
-              <ArrowRight size={18} />
+              <ArrowRight width={18} height={18} strokeWidth={1.75} />
             </Button>
           </Link>
 
           {isAppathonActive && (
             <Link to="/appathon">
               <Button variant="secondary" size="lg">
-                <Sparkles size={18} color="var(--color-accent-primary)" />
                 <span>Participer au KevyLab Appathon</span>
               </Button>
             </Link>

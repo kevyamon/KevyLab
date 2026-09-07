@@ -32,13 +32,29 @@ export const Footer: React.FC = () => {
       >
         {/* Identité */}
         <div>
-          <div style={{ fontSize: '18px', fontWeight: 800, marginBottom: '12px' }}>
-            <span>Kevy</span>
-            <span style={{ color: 'var(--color-accent-primary)' }}>Lab</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+            <img
+              src="/kevylab-logo.png"
+              alt="Logo KevyLab"
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                backgroundColor: '#ffffff',
+                border: '1.5px solid var(--color-border-medium)',
+                boxShadow: '0 0 8px rgba(59, 130, 246, 0.2)',
+                display: 'block'
+              }}
+            />
+            <div style={{ fontSize: '18px', fontWeight: 800 }}>
+              <span>Kevy</span>
+              <span style={{ color: 'var(--color-accent-primary)' }}>Lab</span>
+            </div>
           </div>
           <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px', lineHeight: 1.6 }}>
-            Laboratoire d’innovation logicielle et d’ingénierie numérique. Nous concevons,
-            expérimentons et propulsons des produits technologiques de pointe.
+            Laboratoire d’innovation logicielle et d’ingénierie numérique fondé et piloté par Kevin Amon.
+            Un espace d'expérimentation dédié à la conception de solutions durables, performantes et utiles.
           </p>
         </div>
 
@@ -78,11 +94,13 @@ export const Footer: React.FC = () => {
           justifyContent: 'space-between',
           alignItems: 'center',
           fontSize: '13px',
-          color: 'var(--color-text-muted)'
+          color: 'var(--color-text-muted)',
+          flexWrap: 'wrap',
+          gap: '12px'
         }}
       >
         <div>
-          © {new Date().getFullYear()} KevyLab. Tous droits réservés.
+          © {new Date().getFullYear()} KevyLab — Conçu et développé par Kevin Amon. Tous droits réservés.
         </div>
         <div>
           Plateforme officielle d’ingénierie & d’innovation logicielle.

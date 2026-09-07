@@ -55,6 +55,11 @@ export enum ProjectCategory {
   EXPERIMENTAL = 'EXPERIMENTAL'
 }
 
+export const formatProjectCategory = (category?: string): string => {
+  if (!category) return '';
+  return category.replace(/_/g, ' ');
+};
+
 export enum ProjectStatus {
   RESEARCH = 'RESEARCH',
   PROTOTYPE = 'PROTOTYPE',

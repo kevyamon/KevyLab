@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Clock, Sparkles } from 'lucide-react';
+import { ArrowLeft, Clock } from 'lucide-react';
 import { Card } from '../../components/common/Card';
 import { apiClient } from '../../api/client';
 import { IEvent, IPublicWinner } from '../../types/contracts';
@@ -88,7 +88,6 @@ export const AppathonResultsPage: React.FC = () => {
             marginBottom: '16px'
           }}
         >
-          <Sparkles size={14} />
           <span>Palmarès Officiel</span>
         </div>
 

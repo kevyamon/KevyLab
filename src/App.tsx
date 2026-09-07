@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useEffect, useLayoutEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { ScrollToTopButton } from './components/common/ScrollToTopButton';
@@ -28,10 +28,18 @@ import { useAdminAuthStore } from './store/adminAuthStore';
 
 export const App: React.FC = () => {
   const { initAuth } = useAdminAuthStore();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     initAuth();
   }, [initAuth]);
+
+  // Réinitialisation instantanée du sommet d'écran avant le rendu graphique (effet application mobile)
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [pathname]);
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>

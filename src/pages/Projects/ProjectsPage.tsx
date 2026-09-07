@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Terminal, ArrowRight } from 'lucide-react';
+import { Terminal, ArrowRight } from 'iconoir-react';
 import { Card } from '../../components/common/Card';
-import { ILabProject, ProjectCategory } from '../../types/contracts';
+import { ILabProject, ProjectCategory, formatProjectCategory } from '../../types/contracts';
 import { apiClient } from '../../api/client';
 
 /**
@@ -94,7 +94,7 @@ export const ProjectsPage: React.FC = () => {
               transition: 'all var(--transition-fast)'
             }}
           >
-            {cat === 'ALL' ? 'Tous les projets' : cat}
+            {cat === 'ALL' ? 'Tous les projets' : formatProjectCategory(cat)}
           </button>
         ))}
       </div>
@@ -142,8 +142,8 @@ export const ProjectsPage: React.FC = () => {
                       borderRadius: 'var(--radius-sm)'
                     }}
                   >
-                    <Terminal size={12} />
-                    {project.category}
+                    <Terminal width={14} height={14} strokeWidth={1.75} />
+                    {formatProjectCategory(project.category)}
                   </span>
                   <span style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>
                     {project.status}
@@ -177,7 +177,7 @@ export const ProjectsPage: React.FC = () => {
                   }}
                 >
                   <span>Consulter la fiche</span>
-                  <ArrowRight size={14} />
+                  <ArrowRight width={14} height={14} strokeWidth={1.75} />
                 </div>
               </Card>
             </Link>

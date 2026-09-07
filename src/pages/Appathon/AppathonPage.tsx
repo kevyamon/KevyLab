@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, CheckCircle, FileText, ArrowRight, Clock, Rocket, Layers } from 'lucide-react';
+import { GitFork, Fingerprint, GitMerge, ArrowRight, Clock, Trophy } from 'iconoir-react';
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { apiClient } from '../../api/client';
@@ -79,7 +79,6 @@ export const AppathonPage: React.FC = () => {
             marginBottom: '20px'
           }}
         >
-          <Sparkles size={14} />
           <span>Édition Fondatrice 2026</span>
         </div>
 
@@ -98,7 +97,7 @@ export const AppathonPage: React.FC = () => {
             <Link to="/appathon/participer">
               <Button variant="primary" size="lg">
                 <span>Déposer ma candidature</span>
-                <ArrowRight size={18} />
+                <ArrowRight width={18} height={18} strokeWidth={1.75} />
               </Button>
             </Link>
           ) : (
@@ -115,7 +114,7 @@ export const AppathonPage: React.FC = () => {
                 fontSize: '15px'
               }}
             >
-              <Clock size={16} />
+              <Clock width={16} height={16} strokeWidth={1.75} />
               <span>Les candidatures à cette édition sont actuellement clôturées.</span>
             </div>
           )}
@@ -128,7 +127,7 @@ export const AppathonPage: React.FC = () => {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
           <Card>
             <h2 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Rocket size={20} color="var(--color-accent-primary)" />
+              <GitFork width={20} height={20} color="var(--color-accent-primary)" strokeWidth={1.75} />
               <span>Pourquoi participer ?</span>
             </h2>
             <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px', lineHeight: 1.7 }}>
@@ -140,7 +139,7 @@ export const AppathonPage: React.FC = () => {
 
           <Card>
             <h2 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <CheckCircle size={20} color="var(--color-status-accepted)" />
+              <Fingerprint width={20} height={20} color="var(--color-status-accepted)" strokeWidth={1.75} />
               <span>Qui peut participer ?</span>
             </h2>
             <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px', lineHeight: 1.7 }}>
@@ -152,7 +151,7 @@ export const AppathonPage: React.FC = () => {
 
           <Card>
             <h2 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Layers size={20} color="var(--color-status-review)" />
+              <GitMerge width={20} height={20} color="var(--color-status-review)" strokeWidth={1.75} />
               <span>Déroulement du concours</span>
             </h2>
             <p style={{ color: 'var(--color-text-secondary)', fontSize: '14px', lineHeight: 1.7, marginBottom: '12px' }}>
@@ -220,7 +219,7 @@ export const AppathonPage: React.FC = () => {
         <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
           <Link to="/appathon/resultats">
             <Button variant="secondary" size="lg">
-              <FileText size={16} />
+              <Trophy width={16} height={16} strokeWidth={1.75} />
               <span>Consulter le palmarès & les résultats</span>
             </Button>
           </Link>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '../../components/common/Button';
 
 /**
@@ -55,7 +55,6 @@ export const AppathonBanner: React.FC<AppathonBannerProps> = ({ isOpen = true })
               marginBottom: '10px'
             }}
           >
-            <Sparkles size={14} />
             <span>Concours Officiel • Édition Fondatrice</span>
           </div>
 

@@ -203,7 +203,7 @@ export const ProjectsAdminView: React.FC = () => {
                   <td style={{ padding: '14px 20px' }}>
                     {p.featured ? (
                       <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--color-status-accepted)' }}>
-                        ★ En avant
+                        Mis en avant
                       </span>
                     ) : (
                       <span style={{ fontSize: '11px', color: 'var(--color-text-muted)' }}>—</span>

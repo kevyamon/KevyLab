@@ -1,5 +1,6 @@
 import React from 'react';
 import { useAdminAuthStore, AdminTab } from '../../store/adminAuthStore';
+import { useBodyScrollLock } from '../../hooks/useBodyScrollLock';
 import { LayoutDashboard, Users, Mail, MessageSquare, LogOut, X, Shield, FolderGit2, Trophy } from 'lucide-react';
 import { AdminDashboardView } from './Dashboard/AdminDashboardView';
 import { SubmissionsTableView } from './Submissions/SubmissionsTableView';
@@ -18,6 +19,9 @@ import { EventsAdminView } from './Events/EventsAdminView';
 
 export const AdminManagerOverlay: React.FC = () => {
   const { isManagerOpen, closeManager, user, logout, activeTab, setActiveTab } = useAdminAuthStore();
+
+  // Verrouillage du scroll de fond pendant l'affichage du cockpit staff
+  useBodyScrollLock(isManagerOpen && Boolean(user));
 
   if (!isManagerOpen || !user) return null;
 

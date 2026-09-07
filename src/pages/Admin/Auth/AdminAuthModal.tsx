@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAdminAuthStore } from '../../../store/adminAuthStore';
 import { Button } from '../../../components/common/Button';
 import { AdminRegisterForm } from './AdminRegisterForm';
+import { useBodyScrollLock } from '../../../hooks/useBodyScrollLock';
 import { X, Lock, KeyRound, ShieldAlert } from 'lucide-react';
 
 /**
@@ -26,6 +27,9 @@ const GoogleIcon: React.FC = () => (
 export const AdminAuthModal: React.FC = () => {
   const { isAuthModalOpen, closeAuthModal, login, register, loginWithGoogle } = useAdminAuthStore();
   const [tab, setTab] = useState<'LOGIN' | 'REGISTER'>('LOGIN');
+
+  // Verrouillage systématique du défilement d'arrière-plan quand la modale est active
+  useBodyScrollLock(isAuthModalOpen);
 
   // Formulaire de connexion
   const [loginEmail, setLoginEmail] = useState('');
@@ -73,7 +77,10 @@ export const AdminAuthModal: React.FC = () => {
     try {
       const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
       if (!clientId) {
-        setErrorMessage('La variable VITE_GOOGLE_CLIENT_ID doit être configurée dans le fichier .env du frontend.');
+        if (import.meta.env.DEV) {
+          console.warn('[AdminAuth] VITE_GOOGLE_CLIENT_ID non configuré.');
+        }
+        setErrorMessage('L’authentification Google n’est pas disponible sur cet environnement. Veuillez utiliser vos identifiants staff.');
         setIsLoading(false);
         return;
       }
@@ -92,7 +99,7 @@ export const AdminAuthModal: React.FC = () => {
         });
         (window as any).google.accounts.id.prompt();
       } else {
-        setErrorMessage('Le SDK Google n’est pas disponible. Vérifiez votre connexion.');
+        setErrorMessage('Le service d’authentification Google est temporairement indisponible.');
       }
     } catch (err: any) {
       setErrorMessage(err.message || 'Erreur lors de l’authentification Google.');

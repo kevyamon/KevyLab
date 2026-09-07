@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ExternalLink, Github, Globe, AlertCircle } from 'lucide-react';
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
-import { ILabProject, ProjectStatus } from '../../types/contracts';
+import { ILabProject, ProjectStatus, formatProjectCategory } from '../../types/contracts';
 import { apiClient } from '../../api/client';
 
 /**
@@ -91,7 +91,7 @@ export const ProjectDetailPage: React.FC = () => {
               borderRadius: 'var(--radius-sm)'
             }}
           >
-            {project.category}
+            {formatProjectCategory(project.category)}
           </span>
           <span style={{ fontSize: '13px', color: 'var(--color-text-muted)' }}>
             Statut : {project.status}

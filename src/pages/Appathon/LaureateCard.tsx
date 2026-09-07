@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, Award, ExternalLink, Github, Sparkles, UserCheck } from 'lucide-react';
+import { Trophy, Award, ExternalLink, Github, UserCheck } from 'lucide-react';
 import { IPublicWinner } from '../../types/contracts';
 
 /**
@@ -117,7 +117,6 @@ export const LaureateCard: React.FC<LaureateCardProps> = ({ winner }) => {
       {/* Corps du projet primé */}
       <div style={{ borderTop: '1px solid var(--color-border-subtle)', paddingTop: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-          <Sparkles size={16} color="var(--color-accent-primary)" />
           <h4 style={{ fontSize: '17px', fontWeight: 700, color: 'var(--color-text-primary)' }}>
             {winner.project.title}
           </h4>

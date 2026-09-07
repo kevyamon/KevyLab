@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, CheckCircle2, Clock, Trophy, Users, ShieldAlert } from 'lucide-react';
+import { HistoricShield, CheckCircle, Clock, Medal, Group, WarningTriangle, ChatBubble } from 'iconoir-react';
 import { Card } from '../../components/common/Card';
 
 /**
@@ -26,42 +26,42 @@ export const AppathonTimeline: React.FC = () => {
       title: 'Annonce & Publication Officielle',
       description: 'Dévoilement du concours, ouverture du règlement et publication de la grille de critères sur 100 points.',
       status: 'COMPLETED',
-      icon: <CheckCircle2 size={18} color="var(--color-status-accepted)" />
+      icon: <CheckCircle width={18} height={18} color="var(--color-status-accepted)" strokeWidth={1.75} />
     },
     {
       date: '01 Mars 2026',
       title: 'Ouverture des Candidatures',
       description: 'Dépôt des dossiers via le formulaire multi-étapes avec génération instantanée de la référence unique.',
       status: 'ACTIVE',
-      icon: <Clock size={18} color="var(--color-accent-primary)" />
+      icon: <Clock width={18} height={18} color="var(--color-accent-primary)" strokeWidth={1.75} />
     },
     {
       date: '30 Avril 2026',
       title: 'Clôture Définitive des Dépôts',
       description: 'Fermeture de la plateforme de soumission et verrouillage strict des candidatures pour évaluation.',
       status: 'UPCOMING',
-      icon: <ShieldAlert size={18} color="var(--color-status-pending)" />
+      icon: <WarningTriangle width={18} height={18} color="var(--color-status-pending)" strokeWidth={1.75} />
     },
     {
       date: '15 Mai 2026',
       title: 'Présélection & Instruction Technique',
       description: 'Revue des critères d’utilité, faisabilité et clarté MVP par les ingénieurs du laboratoire.',
       status: 'UPCOMING',
-      icon: <Users size={18} color="var(--color-text-secondary)" />
+      icon: <Group width={18} height={18} color="var(--color-text-secondary)" strokeWidth={1.75} />
     },
     {
       date: '30 Mai 2026',
       title: 'Annonce des Finalistes & Entretiens',
       description: 'Notification des projets retenus pour les échanges d’approfondissement avec le jury.',
       status: 'UPCOMING',
-      icon: <Calendar size={18} color="var(--color-text-secondary)" />
+      icon: <ChatBubble width={18} height={18} color="var(--color-text-secondary)" strokeWidth={1.75} />
     },
     {
       date: '15 Juin 2026',
       title: 'Palmarès & Proclamation des Lauréats',
       description: 'Publication officielle des vainqueurs, attribution des distinctions et accueil dans le programme du Lab.',
       status: 'UPCOMING',
-      icon: <Trophy size={18} color="var(--color-status-winner)" />
+      icon: <Medal width={18} height={18} color="var(--color-status-winner)" strokeWidth={1.75} />
     }
   ];
 
@@ -69,7 +69,7 @@ export const AppathonTimeline: React.FC = () => {
     <Card>
       <div style={{ marginBottom: '28px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-          <Calendar size={22} color="var(--color-accent-primary)" />
+          <HistoricShield width={22} height={22} color="var(--color-accent-primary)" strokeWidth={1.75} />
           <h2 style={{ fontSize: '20px', fontWeight: 700 }}>
             Calendrier & Étapes Clés de l’Édition 2026
           </h2>

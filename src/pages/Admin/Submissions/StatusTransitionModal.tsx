@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SubmissionStatus } from '../../../types/contracts';
 import { apiClient } from '../../../api/client';
 import { Button } from '../../../components/common/Button';
-import { X, GitCommit, AlertTriangle, Trophy, Sparkles } from 'lucide-react';
+import { X, GitCommit, AlertTriangle, Trophy } from 'lucide-react';
 import { ProjectImageUploader } from '../Projects/ProjectImageUploader';
 
 /**

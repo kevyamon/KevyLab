@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layers, Cpu, Code2, Rocket } from 'lucide-react';
+import { Cube, Atom, Terminal, Flask } from 'iconoir-react';
 import { Card } from '../../components/common/Card';
 
 /**
@@ -14,25 +14,25 @@ import { Card } from '../../components/common/Card';
 export const PillarsSection: React.FC = () => {
   const pillars = [
     {
-      icon: <Layers size={28} color="var(--color-accent-primary)" />,
+      icon: <Cube width={28} height={28} color="var(--color-accent-primary)" strokeWidth={1.75} />,
       title: 'Conception de produits',
       description:
         'Développement d’applications web et mobiles modernes, centrées sur l’utilité réelle, l’ergonomie et la durabilité.'
     },
     {
-      icon: <Cpu size={28} color="var(--color-status-review)" />,
-      title: 'Intelligence artificielle',
+      icon: <Atom width={28} height={28} color="var(--color-status-review)" strokeWidth={1.75} />,
+      title: 'Ingénierie Agentique & IA',
       description:
-        'Exploration et intégration de solutions d’IA appliquées, modèles génératifs et traitement intelligent des données.'
+        'Conception augmentée et pilotage par agents autonomes. L’IA est intégrée au cœur du cycle de fabrication logicielle pour bâtir des systèmes rapides, sécurisés et pérennes.'
     },
     {
-      icon: <Code2 size={28} color="var(--color-status-accepted)" />,
+      icon: <Terminal width={28} height={28} color="var(--color-status-accepted)" strokeWidth={1.75} />,
       title: 'Ingénierie logicielle',
       description:
         'Architecture système résiliente, prototypage rigoureux, sécurité renforcée et standards de production éprouvés.'
     },
     {
-      icon: <Rocket size={28} color="var(--color-status-winner)" />,
+      icon: <Flask width={28} height={28} color="var(--color-status-winner)" strokeWidth={1.75} />,
       title: 'Incubation d’idées',
       description:
         'Transformation d’idées prometteuses en concepts structurés, puis en produits opérationnels déployés.'

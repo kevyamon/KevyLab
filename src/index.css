@@ -77,8 +77,21 @@ html {
   background-color: var(--color-bg-base);
   color: var(--color-text-primary);
   line-height: 1.6;
-  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Transition de changement de page fluide type application mobile */
+@keyframes viewFadeIn {
+  from {
+    opacity: 0.9;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+main {
+  animation: viewFadeIn 140ms ease-out;
 }
 
 body {

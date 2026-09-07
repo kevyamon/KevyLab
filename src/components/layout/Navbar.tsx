@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Sparkles } from 'lucide-react';
+import { Menu, Xmark } from 'iconoir-react';
 
 /**
  * ============================================================================
@@ -46,14 +46,30 @@ export const Navbar: React.FC = () => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
+            gap: '12px',
             fontSize: '20px',
             fontWeight: 800,
             letterSpacing: '-0.5px'
           }}
         >
-          <span>Kevy</span>
-          <span style={{ color: 'var(--color-accent-primary)' }}>Lab</span>
+          <img
+            src="/kevylab-logo.png"
+            alt="Logo KevyLab"
+            style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '50%',
+              objectFit: 'cover',
+              backgroundColor: '#ffffff',
+              border: '2px solid var(--color-border-medium)',
+              boxShadow: '0 0 10px rgba(59, 130, 246, 0.25)',
+              display: 'block'
+            }}
+          />
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span>Kevy</span>
+            <span style={{ color: 'var(--color-accent-primary)' }}>Lab</span>
+          </div>
         </Link>
 
         {/* Navigation Desktop */}
@@ -105,7 +121,6 @@ export const Navbar: React.FC = () => {
               border: '1px solid var(--color-border-accent)'
             }}
           >
-            <Sparkles size={14} color="var(--color-accent-primary)" />
             <span>Appathon 2026</span>
           </Link>
 
@@ -133,7 +148,7 @@ export const Navbar: React.FC = () => {
             padding: '8px'
           }}
         >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMobileMenuOpen ? <Xmark width={24} height={24} /> : <Menu width={24} height={24} />}
         </button>
       </div>
 
