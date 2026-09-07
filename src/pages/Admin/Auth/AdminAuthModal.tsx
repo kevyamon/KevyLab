@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAdminAuthStore } from '../../../store/adminAuthStore';
 import { Button } from '../../../components/common/Button';
+import { AdminRegisterForm } from './AdminRegisterForm';
 import { X, Lock, KeyRound, ShieldAlert } from 'lucide-react';
 
 /**
@@ -8,24 +9,27 @@ import { X, Lock, KeyRound, ShieldAlert } from 'lucide-react';
  * KEVYLAB — MODALE D'AUTHENTIFICATION FURTIVE ADMIN
  * ============================================================================
  * Accessible uniquement après l'appui long de 10 secondes sur ScrollToTop.
- * Permet la connexion ou l'inscription sécurisée par la clé secrète "ADMIN_PW".
+ * Permet la connexion directe, l'inscription par clé secrète "ADMIN_PW",
+ * et l'authentification officielle staff par Google OAuth 2.0.
  * ============================================================================
  */
 
+const GoogleIcon: React.FC = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24">
+    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+  </svg>
+);
+
 export const AdminAuthModal: React.FC = () => {
-  const { isAuthModalOpen, closeAuthModal, login, register } = useAdminAuthStore();
+  const { isAuthModalOpen, closeAuthModal, login, register, loginWithGoogle } = useAdminAuthStore();
   const [tab, setTab] = useState<'LOGIN' | 'REGISTER'>('LOGIN');
 
   // Formulaire de connexion
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-
-  // Formulaire d'inscription
-  const [regFirstName, setRegFirstName] = useState('');
-  const [regLastName, setRegLastName] = useState('');
-  const [regEmail, setRegEmail] = useState('');
-  const [regPassword, setRegPassword] = useState('');
-  const [regAdminPw, setRegAdminPw] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -45,20 +49,53 @@ export const AdminAuthModal: React.FC = () => {
     }
   };
 
-  const handleRegisterSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleRegisterSubmit = async (data: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    adminPw: string;
+  }) => {
     setIsLoading(true);
     setErrorMessage(null);
     try {
-      await register({
-        firstName: regFirstName,
-        lastName: regLastName,
-        email: regEmail,
-        password: regPassword,
-        adminPw: regAdminPw
-      });
+      await register(data);
     } catch (err: any) {
       setErrorMessage(err.message || 'Échec de l’enregistrement. Clé ADMIN_PW invalide.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    setErrorMessage(null);
+    try {
+      const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+      if (!clientId) {
+        setErrorMessage('La variable VITE_GOOGLE_CLIENT_ID doit être configurée dans le fichier .env du frontend.');
+        setIsLoading(false);
+        return;
+      }
+      if (typeof window !== 'undefined' && (window as any).google?.accounts?.id) {
+        (window as any).google.accounts.id.initialize({
+          client_id: clientId,
+          callback: async (res: any) => {
+            if (res.credential) {
+              try {
+                await loginWithGoogle(res.credential);
+              } catch (err: any) {
+                setErrorMessage(err.message || 'Échec de la validation du compte Google Staff.');
+              }
+            }
+          }
+        });
+        (window as any).google.accounts.id.prompt();
+      } else {
+        setErrorMessage('Le SDK Google n’est pas disponible. Vérifiez votre connexion.');
+      }
+    } catch (err: any) {
+      setErrorMessage(err.message || 'Erreur lors de l’authentification Google.');
     } finally {
       setIsLoading(false);
     }
@@ -208,69 +245,50 @@ export const AdminAuthModal: React.FC = () => {
                 />
               </div>
 
-              <Button variant="primary" size="lg" type="submit" isLoading={isLoading} style={{ marginTop: '8px' }}>
+              <Button variant="primary" size="lg" type="submit" isLoading={isLoading} style={{ marginTop: '4px' }}>
                 <KeyRound size={16} />
                 <span>Accéder au Dashboard</span>
               </Button>
             </form>
           ) : (
-            <form onSubmit={handleRegisterSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                <input
-                  type="text"
-                  required
-                  placeholder="Prénom"
-                  value={regFirstName}
-                  onChange={(e) => setRegFirstName(e.target.value)}
-                  style={inputStyle}
-                />
-                <input
-                  type="text"
-                  required
-                  placeholder="Nom"
-                  value={regLastName}
-                  onChange={(e) => setRegLastName(e.target.value)}
-                  style={inputStyle}
-                />
-              </div>
-
-              <input
-                type="email"
-                required
-                placeholder="Courriel professionnel"
-                value={regEmail}
-                onChange={(e) => setRegEmail(e.target.value)}
-                style={inputStyle}
-              />
-
-              <input
-                type="password"
-                required
-                placeholder="Mot de passe robuste"
-                value={regPassword}
-                onChange={(e) => setRegPassword(e.target.value)}
-                style={inputStyle}
-              />
-
-              <div>
-                <label style={{ display: 'block', fontSize: '12px', color: 'var(--color-text-accent)', marginBottom: '4px', fontWeight: 600 }}>
-                  Clé Secrète Render (ADMIN_PW) *
-                </label>
-                <input
-                  type="password"
-                  required
-                  placeholder="Clé secrète d’inscription administrative"
-                  value={regAdminPw}
-                  onChange={(e) => setRegAdminPw(e.target.value)}
-                  style={inputStyle}
-                />
-              </div>
-
-              <Button variant="primary" size="lg" type="submit" isLoading={isLoading} style={{ marginTop: '6px' }}>
-                <span>Créer mon compte staff</span>
-              </Button>
-            </form>
+            <AdminRegisterForm
+              isLoading={isLoading}
+              onSubmit={handleRegisterSubmit}
+              inputStyle={inputStyle}
+            />
           )}
+
+          {/* Séparateur et Connexion Google Staff */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', margin: '20px 0 14px 0' }}>
+            <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-border-subtle)' }} />
+            <span style={{ fontSize: '11px', color: 'var(--color-text-muted)', fontWeight: 600 }}>OU</span>
+            <div style={{ flex: 1, height: '1px', backgroundColor: 'var(--color-border-subtle)' }} />
+          </div>
+
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            disabled={isLoading}
+            style={{
+              width: '100%',
+              padding: '11px 16px',
+              backgroundColor: 'var(--color-bg-elevated)',
+              border: '1px solid var(--color-border-medium)',
+              borderRadius: 'var(--radius-sm)',
+              color: 'var(--color-text-primary)',
+              fontSize: '13px',
+              fontWeight: 600,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              cursor: 'pointer',
+              transition: 'background-color 0.2s, border-color 0.2s'
+            }}
+          >
+            <GoogleIcon />
+            <span>Continuer avec Google Staff</span>
+          </button>
         </div>
       </div>
     </div>

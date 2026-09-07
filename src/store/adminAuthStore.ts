@@ -27,6 +27,7 @@ interface AdminAuthStore {
   setActiveTab: (tab: AdminTab) => void;
 
   login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: (idToken: string, adminPw?: string) => Promise<void>;
   register: (data: { email: string; password: string; firstName: string; lastName: string; adminPw: string }) => Promise<void>;
   logout: () => Promise<void>;
   initAuth: () => Promise<void>;
@@ -62,6 +63,15 @@ export const useAdminAuthStore = create<AdminAuthStore>((set, get) => {
       const res = await apiClient.post<{ user: IAdminUser; accessToken: string }>('/admin/auth/login', {
         email,
         password
+      });
+      apiClient.setToken(res.accessToken);
+      set({ user: res.user, isAuthenticated: true, isAuthModalOpen: false, isManagerOpen: true });
+    },
+
+    loginWithGoogle: async (idToken, adminPw) => {
+      const res = await apiClient.post<{ user: IAdminUser; accessToken: string }>('/admin/auth/google', {
+        idToken,
+        adminPw
       });
       apiClient.setToken(res.accessToken);
       set({ user: res.user, isAuthenticated: true, isAuthModalOpen: false, isManagerOpen: true });

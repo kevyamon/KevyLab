@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { X, Upload, Check } from 'lucide-react';
+import { X, Check } from 'lucide-react';
 import { Card } from '../../../components/common/Card';
 import { Button } from '../../../components/common/Button';
 import { apiClient } from '../../../api/client';
 import { ILabProject, ProjectCategory, ProjectStatus } from '../../../types/contracts';
+import { ProjectImageUploader } from './ProjectImageUploader';
+import { ProjectFormFields } from './ProjectFormFields';
 
 /**
  * ============================================================================
  * KEVYLAB — MODALE D'ÉDITION & CRÉATION DE PROJET (ProjectModal)
  * ============================================================================
  * Formulaire staff pour créer ou mettre à jour un projet du laboratoire avec
- * sélection directe d'image depuis les fichiers locaux.
+ * téléversement Cloudinary direct via ProjectImageUploader (≤ 325 lignes).
  * ============================================================================
  */
 
@@ -50,19 +52,6 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, on
           .replace(/^-+|-+$/g, '')
       );
     }
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === 'string') {
-        setCoverImageUrl(reader.result);
-      }
-    };
-    reader.readAsDataURL(file);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -124,31 +113,50 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, on
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.75)',
-        zIndex: 1100,
+        backgroundColor: 'var(--color-bg-overlay)',
+        backdropFilter: 'blur(12px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        zIndex: 1100,
         padding: '24px'
       }}
     >
-      <Card style={{ width: '100%', maxWidth: '680px', maxHeight: '90vh', overflowY: 'auto' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <h2 style={{ fontSize: '18px', fontWeight: 800 }}>
-            {project ? 'Modifier le projet' : 'Créer un nouveau projet'}
-          </h2>
-          <button onClick={onClose} style={{ padding: '6px', color: 'var(--color-text-muted)', cursor: 'pointer' }}>
-            <X size={18} />
-          </button>
-        </div>
+      <Card
+        style={{
+          width: '100%',
+          maxWidth: '720px',
+          maxHeight: '90vh',
+          overflowY: 'auto',
+          padding: '28px',
+          position: 'relative'
+        }}
+      >
+        <button
+          onClick={onClose}
+          style={{
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+            color: 'var(--color-text-muted)',
+            cursor: 'pointer',
+            padding: '4px'
+          }}
+        >
+          <X size={20} />
+        </button>
+
+        <h2 style={{ fontSize: '20px', fontWeight: 700, marginBottom: '20px' }}>
+          {project ? 'Modifier le projet' : 'Créer un nouveau projet du Lab'}
+        </h2>
 
         {error && (
           <div
             style={{
               padding: '10px 14px',
-              borderRadius: 'var(--radius-sm)',
               backgroundColor: 'var(--color-status-rejected-bg)',
               color: 'var(--color-status-rejected)',
+              borderRadius: 'var(--radius-sm)',
               fontSize: '13px',
               marginBottom: '16px'
             }}
@@ -158,222 +166,41 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose, on
         )}
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>
-                Nom du projet *
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => handleNameChange(e.target.value)}
-                style={inputStyle}
-                required
-              />
-            </div>
+          <ProjectFormFields
+            name={name}
+            slug={slug}
+            tagline={tagline}
+            description={description}
+            problem={problem}
+            solution={solution}
+            category={category}
+            status={status}
+            technologies={technologies}
+            platforms={platforms}
+            websiteUrl={websiteUrl}
+            githubUrl={githubUrl}
+            inputStyle={inputStyle}
+            onNameChange={handleNameChange}
+            onSlugChange={setSlug}
+            onTaglineChange={setTagline}
+            onDescriptionChange={setDescription}
+            onProblemChange={setProblem}
+            onSolutionChange={setSolution}
+            onCategoryChange={setCategory}
+            onStatusChange={setStatus}
+            onTechnologiesChange={setTechnologies}
+            onPlatformsChange={setPlatforms}
+            onWebsiteUrlChange={setWebsiteUrl}
+            onGithubUrlChange={setGithubUrl}
+          />
 
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>
-                Slug d'URL *
-              </label>
-              <input
-                type="text"
-                value={slug}
-                onChange={(e) => setSlug(e.target.value)}
-                style={inputStyle}
-                required
-              />
-            </div>
-          </div>
-
-          <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>
-              Accroche / Tagline
-            </label>
-            <input
-              type="text"
-              value={tagline}
-              onChange={(e) => setTagline(e.target.value)}
-              placeholder="Une courte phrase de présentation"
-              style={inputStyle}
-            />
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>
-                Catégorie
-              </label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value as ProjectCategory)}
-                style={inputStyle}
-              >
-                {Object.values(ProjectCategory).map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>
-                Statut
-              </label>
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value as ProjectStatus)}
-                style={inputStyle}
-              >
-                {Object.values(ProjectStatus).map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>
-              Description générale *
-            </label>
-            <textarea
-              rows={3}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              style={inputStyle}
-              required
-            />
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>
-                Problème adressé
-              </label>
-              <textarea
-                rows={2}
-                value={problem}
-                onChange={(e) => setProblem(e.target.value)}
-                style={inputStyle}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>
-                Solution apportée
-              </label>
-              <textarea
-                rows={2}
-                value={solution}
-                onChange={(e) => setSolution(e.target.value)}
-                style={inputStyle}
-              />
-            </div>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>
-                Technologies (séparées par virgule)
-              </label>
-              <input
-                type="text"
-                value={technologies}
-                onChange={(e) => setTechnologies(e.target.value)}
-                placeholder="TypeScript, React, Python..."
-                style={inputStyle}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>
-                Plateformes (séparées par virgule)
-              </label>
-              <input
-                type="text"
-                value={platforms}
-                onChange={(e) => setPlatforms(e.target.value)}
-                placeholder="Web, iOS, Android..."
-                style={inputStyle}
-              />
-            </div>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>
-                URL Site officiel
-              </label>
-              <input
-                type="url"
-                value={websiteUrl}
-                onChange={(e) => setWebsiteUrl(e.target.value)}
-                placeholder="https://..."
-                style={inputStyle}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>
-                URL GitHub
-              </label>
-              <input
-                type="url"
-                value={githubUrl}
-                onChange={(e) => setGithubUrl(e.target.value)}
-                placeholder="https://github.com/..."
-                style={inputStyle}
-              />
-            </div>
-          </div>
-
-          {/* Sélecteur de fichier image direct */}
-          <div>
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '6px' }}>
-              Image de couverture du projet
-            </label>
-            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-              <label
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '8px 16px',
-                  backgroundColor: 'var(--color-bg-elevated)',
-                  border: '1px solid var(--color-border-subtle)',
-                  borderRadius: 'var(--radius-sm)',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  cursor: 'pointer'
-                }}
-              >
-                <Upload size={16} />
-                <span>Sélectionner une image locale</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  style={{ display: 'none' }}
-                />
-              </label>
-
-              {coverImageUrl && (
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <img
-                    src={coverImageUrl}
-                    alt="Aperçu"
-                    style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }}
-                  />
-                  <span style={{ fontSize: '12px', color: 'var(--color-status-accepted)' }}>
-                    Image chargée
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
+          {/* Téléversement et prévisualisation média Cloudinary */}
+          <ProjectImageUploader
+            imageUrl={coverImageUrl}
+            onImageUploaded={(url) => setCoverImageUrl(url)}
+            onImageRemoved={() => setCoverImageUrl('')}
+            folder="projects"
+          />
 
           <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px' }}>
             <input

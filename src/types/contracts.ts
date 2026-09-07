@@ -241,6 +241,7 @@ export interface IPublicWinner {
     photoUrl?: string;
     role?: string;
     bio?: string;
+    presentationDescription?: string;
     distinction?: string;
     rank?: number;
   };

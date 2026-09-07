@@ -130,7 +130,7 @@ export const LaureateCard: React.FC<LaureateCardProps> = ({ winner }) => {
         )}
 
         <p style={{ fontSize: '14px', color: 'var(--color-text-secondary)', lineHeight: 1.7, marginBottom: '14px' }}>
-          {profile.bio || winner.project.solution || 'Projet récompensé pour sa haute valeur ajoutée et son potentiel de développement.'}
+          {profile.presentationDescription || profile.bio || winner.project.solution || 'Projet récompensé pour sa haute valeur ajoutée et son potentiel d’ingénierie.'}
         </p>
 
         {/* Liens du projet récompensé */}
