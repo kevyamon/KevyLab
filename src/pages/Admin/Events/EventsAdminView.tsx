@@ -58,7 +58,7 @@ export const EventsAdminView: React.FC = () => {
   const handlePublishResults = async () => {
     if (!event?._id) return;
     const confirm = window.confirm(
-      '⚠️ Attention : La publication des résultats va rendre publics les projets lauréats sur la page /appathon/resultats et notifier les candidats. Voulez-vous continuer ?'
+      'Attention : La publication des résultats va rendre publics les projets lauréats sur la page /appathon/resultats et notifier les candidats. Voulez-vous continuer ?'
     );
     if (!confirm) return;
 
