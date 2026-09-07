@@ -1,0 +1,112 @@
+/* ==============================================================================
+   KEVYLAB — DESIGN SYSTEM & TOKENS SÉMANTIQUES (ZÉRO COULEUR EN DUR)
+   ==============================================================================
+   Toutes les couleurs, dégradés, opacités et ombres sont déclarés ici.
+   Aucune valeur de couleur brute ne doit être codée en dur dans les composants.
+   ============================================================================== */
+
+:root {
+  /* --- Arrière-plans sombres & Néo-modernes --- */
+  --color-bg-base: #080b11;
+  --color-bg-surface: #0e131f;
+  --color-bg-elevated: #151c2e;
+  --color-bg-overlay: rgba(8, 11, 17, 0.85);
+  --color-bg-card: rgba(21, 28, 46, 0.65);
+  --color-bg-input: #0c101a;
+
+  /* --- Typographie & Niveaux de Contraste --- */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
+  --color-text-inverse: #080b11;
+  --color-text-accent: #818cf8;
+
+  /* --- Frontières & Délimitations --- */
+  --color-border-subtle: #1e293b;
+  --color-border-medium: #334155;
+  --color-border-strong: #475569;
+  --color-border-accent: #6366f1;
+
+  /* --- Accents Technologiques & Actions --- */
+  --color-accent-primary: #6366f1;
+  --color-accent-hover: #4f46e5;
+  --color-accent-subtle: rgba(99, 102, 241, 0.12);
+  --color-accent-gradient-start: #6366f1;
+  --color-accent-gradient-end: #a855f7;
+
+  /* --- Statuts du Workflow Métier --- */
+  --color-status-pending: #f59e0b;
+  --color-status-pending-bg: rgba(245, 158, 11, 0.12);
+  --color-status-review: #38bdf8;
+  --color-status-review-bg: rgba(56, 189, 248, 0.12);
+  --color-status-shortlisted: #818cf8;
+  --color-status-shortlisted-bg: rgba(129, 140, 248, 0.12);
+  --color-status-accepted: #10b981;
+  --color-status-accepted-bg: rgba(16, 185, 129, 0.12);
+  --color-status-rejected: #ef4444;
+  --color-status-rejected-bg: rgba(239, 68, 68, 0.12);
+  --color-status-winner: #eab308;
+  --color-status-winner-bg: rgba(234, 179, 8, 0.15);
+
+  /* --- Éléments Visuels & Ombres --- */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.25);
+
+  /* --- Rayons de Bordure (Bordures arrondies) --- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* --- Transitions & Animations --- */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Réinitialisation et base globale */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg-base);
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
