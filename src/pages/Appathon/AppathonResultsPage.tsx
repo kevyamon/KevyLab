@@ -40,8 +40,8 @@ export const AppathonResultsPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div style={{ maxWidth: '900px', margin: '80px auto', textAlign: 'center', color: 'var(--color-text-muted)' }}>
-        Chargement des résultats officiels...
+      <div style={{ maxWidth: '900px', margin: '80px auto', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '15px' }}>
+        Chargement des données en cours...
       </div>
     );
   }

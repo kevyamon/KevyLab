@@ -42,8 +42,8 @@ export const AppathonPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div style={{ maxWidth: '1100px', margin: '80px auto', textAlign: 'center', color: 'var(--color-text-muted)' }}>
-        Chargement des informations du concours...
+      <div style={{ maxWidth: '1100px', margin: '80px auto', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '15px' }}>
+        Chargement des données en cours...
       </div>
     );
   }

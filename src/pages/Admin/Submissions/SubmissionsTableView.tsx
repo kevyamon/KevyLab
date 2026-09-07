@@ -127,8 +127,8 @@ export const SubmissionsTableView: React.FC = () => {
 
       {/* Affichage des données selon le mode sélectionné */}
       {loading ? (
-        <div style={{ color: 'var(--color-text-muted)', padding: '40px 0', textAlign: 'center' }}>
-          Chargement des candidatures...
+        <div style={{ color: 'var(--color-text-muted)', padding: '40px 0', textAlign: 'center', fontSize: '15px' }}>
+          Chargement des données en cours...
         </div>
       ) : viewMode === 'KANBAN' ? (
         <SubmissionsKanbanBoard

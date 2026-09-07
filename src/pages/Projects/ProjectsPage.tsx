@@ -101,8 +101,8 @@ export const ProjectsPage: React.FC = () => {
 
       {/* Liste des projets */}
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--color-text-muted)' }}>
-          Chargement du catalogue en cours...
+        <div style={{ textAlign: 'center', padding: '60px 0', color: 'var(--color-text-muted)', fontSize: '15px' }}>
+          Chargement des données en cours...
         </div>
       ) : filteredProjects.length === 0 ? (
         <Card style={{ textAlign: 'center', padding: '60px 24px' }}>

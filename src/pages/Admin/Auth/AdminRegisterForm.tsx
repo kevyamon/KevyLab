@@ -87,12 +87,12 @@ export const AdminRegisterForm: React.FC<AdminRegisterFormProps> = ({
             fontWeight: 600
           }}
         >
-          Clé Secrète Render (ADMIN_PW) *
+          Code d’autorisation staff *
         </label>
         <input
           type="password"
           required
-          placeholder="Clé secrète d’inscription administrative"
+          placeholder="Entrez le code d’accès administrateur"
           value={adminPw}
           onChange={(e) => setAdminPw(e.target.value)}
           style={inputStyle}
