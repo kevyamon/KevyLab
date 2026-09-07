@@ -36,6 +36,7 @@ export const AdminAuthModal: React.FC = () => {
   const [loginPassword, setLoginPassword] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   if (!isAuthModalOpen) return null;
@@ -72,7 +73,8 @@ export const AdminAuthModal: React.FC = () => {
   };
 
   const handleGoogleLogin = async () => {
-    setIsLoading(true);
+    if (isLoading || isGoogleLoading) return;
+    setIsGoogleLoading(true);
     setErrorMessage(null);
     try {
       const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
@@ -81,7 +83,7 @@ export const AdminAuthModal: React.FC = () => {
           console.warn('[AdminAuth] VITE_GOOGLE_CLIENT_ID non configuré.');
         }
         setErrorMessage('L’authentification Google n’est pas disponible sur cet environnement. Veuillez utiliser vos identifiants staff.');
-        setIsLoading(false);
+        setIsGoogleLoading(false);
         return;
       }
       if (typeof window !== 'undefined' && (window as any).google?.accounts?.id) {
@@ -93,18 +95,26 @@ export const AdminAuthModal: React.FC = () => {
                 await loginWithGoogle(res.credential);
               } catch (err: any) {
                 setErrorMessage(err.message || 'Échec de la validation du compte Google Staff.');
+              } finally {
+                setIsGoogleLoading(false);
               }
+            } else {
+              setIsGoogleLoading(false);
             }
           }
         });
-        (window as any).google.accounts.id.prompt();
+        (window as any).google.accounts.id.prompt((notification: any) => {
+          if (notification?.isNotDisplayed?.() || notification?.isSkippedMoment?.()) {
+            setIsGoogleLoading(false);
+          }
+        });
       } else {
         setErrorMessage('Le service d’authentification Google est temporairement indisponible.');
+        setIsGoogleLoading(false);
       }
     } catch (err: any) {
       setErrorMessage(err.message || 'Erreur lors de l’authentification Google.');
-    } finally {
-      setIsLoading(false);
+      setIsGoogleLoading(false);
     }
   };
 
@@ -171,34 +181,23 @@ export const AdminAuthModal: React.FC = () => {
 
         {/* Sélecteur d'onglets Connexion / Inscription */}
         <div style={{ display: 'flex', borderBottom: '1px solid var(--color-border-subtle)' }}>
-          <button
-            onClick={() => { setTab('LOGIN'); setErrorMessage(null); }}
-            style={{
-              flex: 1,
-              padding: '12px',
-              fontSize: '13px',
-              fontWeight: 600,
-              backgroundColor: tab === 'LOGIN' ? 'var(--color-bg-elevated)' : 'transparent',
-              color: tab === 'LOGIN' ? 'var(--color-text-primary)' : 'var(--color-text-muted)',
-              borderBottom: tab === 'LOGIN' ? '2px solid var(--color-accent-primary)' : 'none'
-            }}
-          >
-            Connexion
-          </button>
-          <button
-            onClick={() => { setTab('REGISTER'); setErrorMessage(null); }}
-            style={{
-              flex: 1,
-              padding: '12px',
-              fontSize: '13px',
-              fontWeight: 600,
-              backgroundColor: tab === 'REGISTER' ? 'var(--color-bg-elevated)' : 'transparent',
-              color: tab === 'REGISTER' ? 'var(--color-text-primary)' : 'var(--color-text-muted)',
-              borderBottom: tab === 'REGISTER' ? '2px solid var(--color-accent-primary)' : 'none'
-            }}
-          >
-            Inscription Staff
-          </button>
+          {(['LOGIN', 'REGISTER'] as const).map((t) => (
+            <button
+              key={t}
+              onClick={() => { setTab(t); setErrorMessage(null); }}
+              style={{
+                flex: 1,
+                padding: '12px',
+                fontSize: '13px',
+                fontWeight: 600,
+                backgroundColor: tab === t ? 'var(--color-bg-elevated)' : 'transparent',
+                color: tab === t ? 'var(--color-text-primary)' : 'var(--color-text-muted)',
+                borderBottom: tab === t ? '2px solid var(--color-accent-primary)' : 'none'
+              }}
+            >
+              {t === 'LOGIN' ? 'Connexion' : 'Inscription Staff'}
+            </button>
+          ))}
         </div>
 
         <div style={{ padding: '24px' }}>
@@ -275,7 +274,7 @@ export const AdminAuthModal: React.FC = () => {
           <button
             type="button"
             onClick={handleGoogleLogin}
-            disabled={isLoading}
+            disabled={isLoading || isGoogleLoading}
             style={{
               width: '100%',
               padding: '11px 16px',
@@ -289,12 +288,26 @@ export const AdminAuthModal: React.FC = () => {
               alignItems: 'center',
               justifyContent: 'center',
               gap: '10px',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s, border-color 0.2s'
+              cursor: (isLoading || isGoogleLoading) ? 'not-allowed' : 'pointer',
+              opacity: (isLoading || isGoogleLoading) ? 0.65 : 1,
+              pointerEvents: isGoogleLoading ? 'none' : 'auto',
+              transition: 'all 0.2s ease'
             }}
           >
-            <GoogleIcon />
-            <span>Continuer avec Google Staff</span>
+            {isGoogleLoading ? (
+              <>
+                <svg width="15" height="15" viewBox="0 0 24 24" style={{ animation: 'spin 0.8s linear infinite' }}>
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" fill="none" opacity="0.25" />
+                  <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
+                </svg>
+                <span>Authentification en cours...</span>
+              </>
+            ) : (
+              <>
+                <GoogleIcon />
+                <span>Continuer avec Google Staff</span>
+              </>
+            )}
           </button>
         </div>
       </div>

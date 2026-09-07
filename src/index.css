@@ -123,3 +123,33 @@ button {
 input, textarea, select {
   font-family: inherit;
 }
+
+/* ==========================================================================
+   ANIMATIONS DE CHARGEMENT (Skeleton Shimmer & Spin)
+   ========================================================================== */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-elevated) 25%,
+    var(--color-border-medium) 37%,
+    var(--color-bg-elevated) 63%
+  );
+  background-size: 400% 100%;
+  animation: skeletonShimmer 1.4s ease infinite;
+}
+
